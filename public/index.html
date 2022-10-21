@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Chirp</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Synchrony</h1>
+  <!-- container for input & buttons -->
+  <section class="container">
+    <p>FPO: This data will come from the wristband PPG sensor</p>
+    <input type="text" id="bpm-input">
+    <button id="bpm-submit">Submit BPM</button>
+  </section>
+  <section class="container">
+    <h2>BPM History</h2>
+    <div id="bpm-history"></div>
+  </section>
+  <script src="client.js"></script>
+</body>
+</html>
