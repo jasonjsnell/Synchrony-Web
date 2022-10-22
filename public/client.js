@@ -2,7 +2,7 @@ window.addEventListener('load', () => {
     
     console.log('Window loaded');
 
-    let bpmHistory = document.getElementById('bpm-history');
+    let bpmHistoryDiv = document.getElementById('bpm-history');
 
     //fetch all messages from server
     fetch('/bpm-history')
@@ -15,13 +15,13 @@ window.addEventListener('load', () => {
         //loop through each message individually
         for (let i = 0; i < bpmHistory.length; i++){
             
-            let message = bpmHistory[i].message;
+            let bpm = bpmHistory[i].bpm;
             let time = bpmHistory[i].time;
 
-            let newMessage = document.createElement('p');
-            let newMessageContent = `${time}: ${message}`;
-            newMessage.innerHTML = newMessageContent;
-            bpmHistory.appendChild(newMessage);
+            let newBpm = document.createElement('p');
+            let newBpmContent = `${time}: ${bpm}`;
+            newBpm.innerHTML = newBpmContent;
+            bpmHistoryDiv.appendChild(newBpm);
         }
     })
     .catch(error => {
@@ -61,7 +61,7 @@ window.addEventListener('load', () => {
             let newBpm = document.createElement('p');
             let newBpmContent = `${time}: ${bpm}`;
             newBpm.innerHTML = newBpmContent;
-            bpmHistory.insertBefore(newBpm, bpmHistory.firstChild);
+            bpmHistoryDiv.insertBefore(newBpm, bpmHistory.firstChild);
         })
         .catch(error => {
             console.log(error);

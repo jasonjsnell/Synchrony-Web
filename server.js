@@ -7,7 +7,7 @@ server.use(express.json()); //let express know we are using JSON data
 
 //database
 let DataStore = require('nedb');
-let db = new DataStore('messages.db');
+let db = new DataStore('bpms.db');
 db.loadDatabase();
 
 //Routes
