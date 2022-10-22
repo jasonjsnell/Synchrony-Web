@@ -43,7 +43,7 @@ server.post('/new-bpm', (request, response) => {
   //save it to the database
   db.insert(dataFromClient, (err, newDocs) => {
     if (err) {
-      response.json({ task: "DB insertt failed" });
+      response.json({ task: "DB insert failed" });
     } else {
       response.json(dataObj);
     }
