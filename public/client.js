@@ -4,69 +4,51 @@ window.addEventListener('load', () => {
 
     let bpmHistoryDiv = document.getElementById('bpm-history');
 
+    //RETRIEVING DATA FROM THE DATABASE
     //fetch all messages from server
     fetch('/bpm-history')
     .then(response => response.json())
     .then(data => {
         
         //get messages from data, and var name inside is data
-        let bpmHistory = data.data;
-
+        let bpmHistoryFromDb = data.bpms;
+      
+      //sort by date, most recent first
+        bpmHistoryFromDb.sort(sortByDate);
+      
+      //only list the most recent 100 entries so the HTML page doesn't explode
+      let maxDisplay = bpmHistoryFromDb.length;
+      if (maxDisplay > 100) {
+        maxDisplay = 100;
+      }
+      
         //loop through each message individually
-        for (let i = 0; i < bpmHistory.length; i++){
+        for (let i = 0; i < maxDisplay; i++){
             
-            let bpm = bpmHistory[i].bpm;
-            let time = bpmHistory[i].time;
+            let bpmFromDb = bpmHistoryFromDb[i];
+            let bpm = bpmFromDb.bpm;
+            let time = bpmFromDb.time;
+            let user = bpmFromDb.user;
 
-            let newBpm = document.createElement('p');
-            let newBpmContent = `${time}: ${bpm}`;
-            newBpm.innerHTML = newBpmContent;
-            bpmHistoryDiv.appendChild(newBpm);
+          //if all the vars are valid...
+            if (user && bpm && time) {
+              
+              //print on screen
+              let newBpmDisplay = document.createElement('p');
+              let newBpmContent = `${bpm} BPM from User ${user} at ${time} : `;
+              newBpmDisplay.innerHTML = newBpmContent;
+              bpmHistoryDiv.appendChild(newBpmDisplay);
+            }
+            
         }
     })
     .catch(error => {
         console.log(error);
     })
 
-    //input field and submit button
-    let bpmInputField = document.getElementById('bpm-input');
-    let bpmSubmitBtn = document.getElementById('bpm-submit');
-    
-    //listen to the click
-    bpmSubmitBtn.addEventListener('click', () => {
-        
-        let bpmValue = bpmInputField.value;
-        console.log(bpmValue);
-
-        //create post request
-        let bpmObj = {
-            bpm: bpmValue
-        };
-        //stringify
-        let bpmObjJSON = JSON.stringify(bpmObj);
-
-        //send the new user data from input field to server via fetch func
-        fetch('/new-bpm', {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: bpmObjJSON
-        })
-        .then(response => response.json())
-        .then(data => {
-            
-            //extract vars from data obt
-            let bpm = data.content.bpm;
-            let time = data.content.time;
-
-            let newBpm = document.createElement('p');
-            let newBpmContent = `${time}: ${bpm}`;
-            newBpm.innerHTML = newBpmContent;
-            bpmHistoryDiv.insertBefore(newBpm, bpmHistory.firstChild);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-    });
-    
-
 })
+
+//sorts JSON ojbect array by date
+function sortByDate(a, b) {
+    return new Date(b.time).getTime() - new Date(a.time).getTime();
+}
