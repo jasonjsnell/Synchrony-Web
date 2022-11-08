@@ -1,10 +1,21 @@
 //socket connection
 let socket = io();
+let jasonNewBPM = document.getElementById('jason-new-bpm');
 
 //connect socket client 
 socket.on('connect', () => {
   console.log("Socket: client.JS file in index.html connected")
 });
+
+//get BPM from server continuously 
+ socket.on('newBpmFromServer', (dataFromServer) => {
+  //console.log("New BPM from server", dataFromServer.bpmData.bpm);
+   jasonNewBPM.innerHTML = dataFromServer.bpmData.bpm
+    
+  });
+
+
+
 
 window.addEventListener('load', () => {
 
@@ -13,7 +24,11 @@ window.addEventListener('load', () => {
   //div to list the DB entries in HTML
   let bpmHistoryDiv = document.getElementById('bpm-history');
 
-  //RETRIEVING DATA FROM THE DATABASE
+  
+  //TODO: add soc
+  //socket.on('newBpmFromWatch', (dataFromWatch) => {
+  
+  //ON LOAD, RENDERING DATA FROM THE DATABASE
   //fetch all messages from server
   fetch('/bpm-history')
     .then(response => response.json())

@@ -31,16 +31,19 @@ server.listen(port, () => {
 
 //--> SOCKETS
 io.sockets.on('connection', (socket) => {
-    console.log("Socket: connected");
+    console.log("Server socket: connected");
   
  
   socket.on('disconnect', (data) => {
-    console.log("Socket: disconnected");
+    console.log("Server socket: disconnected");
   });
   
 
   socket.on('newBpmFromWatch', (dataFromWatch) => {
     
+    //user
+    //bpm
+    //time
     console.log("New BPM from watch", dataFromWatch);
   
     //replicate data object for DB insertion
@@ -58,13 +61,10 @@ io.sockets.on('connection', (socket) => {
       }
     });
     
-    //TODO: can a notification happen here to tell the client to refresh its feed?
-    
-    //in this build, send it back out so same watch can buzz at its local rate
-    //next version, it will send the bpmData to the other watch
-    io.sockets.emit('newBpmFromServer', {bpmData: dataFromWatch});
     //send to others, and not self
-    //socket.broadcast.emit('mouseDrawData', data);
+    socket.broadcast.emit('newBpmFromServer', {bpmData: dataFromWatch});
+
+    
   });
   
   
