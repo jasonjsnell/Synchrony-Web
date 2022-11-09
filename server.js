@@ -63,7 +63,6 @@ io.sockets.on('connection', (socket) => {
     
     //send to others, and not self
     socket.broadcast.emit('newBpmFromServer', {bpmData: dataFromWatch});
-
     
   });
   
